@@ -1,0 +1,31 @@
+
+========================================================
+
+```{r}
+library(twitteR)
+library(ROauth)
+library(plyr)
+library(stringr)
+library(ggplot2)
+
+```
+
+You can also embed plots, for example:
+
+```{r }
+
+requestURL<-"https://api.twitter.com/oauth/request_token"
+accessURL<-"http://api.twitter.com/oauth/access_token"
+authURL<-"http://api.twitter.com/oauth/authorize"
+consumerKey<-"PHCMkFscXg8b2PsLR5WuLu30I"
+consumerSecret<-"PHCMkFscXg8b2PsLR5WuLu30I"
+Cred<-OauthFactroy$new(consumerKey=consumerKey,
+                       consumerSecret=consumerSecret,
+                       requestURL=requestURL,
+                       accessURL=accessURL,
+                       authURL=authURL)
+Cred$handshake(cainfo=system.file("CurlSSL","cacert.pem",pa))
+download.file(url="http://curl.haxx.se/ca/cacert/pem",destfile="cacert.pem",method="curl")
+ download.file("http://people.su.se/~lundh/data/cpi_kpix.rda","cpi_kpix.rda")
+```
+
