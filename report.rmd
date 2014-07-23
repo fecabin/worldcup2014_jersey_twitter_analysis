@@ -3,29 +3,53 @@
 
 ```{r}
 library(twitteR)
-library(ROauth)
+library(ROAuth)
 library(plyr)
 library(stringr)
 library(ggplot2)
-
+library(tm)
+library(SnowballC)
 ```
 
 You can also embed plots, for example:
 
 ```{r }
-
+#download.file(url="http://curl.haxx.se/ca/cacert.pem",destfile="cacert.pem")
 requestURL<-"https://api.twitter.com/oauth/request_token"
-accessURL<-"http://api.twitter.com/oauth/access_token"
-authURL<-"http://api.twitter.com/oauth/authorize"
+accessURL<-"https://api.twitter.com/oauth/access_token"
+authURL<-"https://api.twitter.com/oauth/authorize"
 consumerKey<-"PHCMkFscXg8b2PsLR5WuLu30I"
-consumerSecret<-"PHCMkFscXg8b2PsLR5WuLu30I"
-Cred<-OauthFactroy$new(consumerKey=consumerKey,
-                       consumerSecret=consumerSecret,
-                       requestURL=requestURL,
-                       accessURL=accessURL,
-                       authURL=authURL)
-Cred$handshake(cainfo=system.file("CurlSSL","cacert.pem",pa))
-download.file(url="http://curl.haxx.se/ca/cacert/pem",destfile="cacert.pem",method="curl")
- download.file("http://people.su.se/~lundh/data/cpi_kpix.rda","cpi_kpix.rda")
+consumerSecret<-"0be83YNqZ2UCXVknPbLvaQPLBq5n403ZGTTCG00ESzN123jMrr"
+Cred<-OAuthFactory$new(consumerKey=consumerKey,
+                             consumerSecret=consumerSecret,
+                             requestURL=requestURL,
+                             accessURL=accessURL, 
+                             authURL=authURL)
+Cred$handshake(cainfo=system.file("CurlSSL","cacert.pem",package = "RCurl"))
+#registerTwitterOAuth(Cred)
+
+
+save(Cred,file="twitter authentication.Rdata")
+load("auth.Rdata")
+registerTwitterOAuth(Cred)
+
+```
+### To fetch the data
+1. Germey
+
+```{r }
+jersey.messi = searchTwitter("JERSEY MESSI",cainfo="cacert.pem",n=1000)
+j.messi.df<-twListToDF(jersey.messi)
+
+require(stringr)
+neuerCloudText<-df.neuer$text
+neuerCloudText<-str_replace_all(neuerCloudText,"[^[:graph:]]", " ")
+ap.corpus <- Corpus(DataframeSource(data.frame(neuerCloudText))
+ap.corpus <- tm_map(ap.corpus, tolower)
+
 ```
 
+# Results
+```{r }
+s1<-ggplot(df, aes(x=performance, y=score)) +geom_point(shape=1,size=2)+ geom_smooth(method=lm)+ geom_point(aes(color=factor(df$position))) + geom_point(aes(color=factor(df$position))) + labs(x="Player Performance",y="Buying intention",title= "Buying intention vs Player Performance")+ theme(axis.title = element_text(face="bold", size=16))+ scale_color_discrete(name ="FieldPositon")
+```
