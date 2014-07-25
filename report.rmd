@@ -14,7 +14,7 @@ library(SnowballC)
 You can also embed plots, for example:
 
 ```{r }
-#download.file(url="http://curl.haxx.se/ca/cacert.pem",destfile="cacert.pem")
+download.file(url="http://curl.haxx.se/ca/cacert.pem",destfile="cacert.pem")
 requestURL<-"https://api.twitter.com/oauth/request_token"
 accessURL<-"https://api.twitter.com/oauth/access_token"
 authURL<-"https://api.twitter.com/oauth/authorize"

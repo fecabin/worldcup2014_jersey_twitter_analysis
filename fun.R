@@ -48,7 +48,7 @@ readFile<-function (s){
                        numTweets=resultset$numTweets,numRetweets=resultset$numRetweets,nation=pMeta$nation,positionRank=pMeta$positionRank
                        ,overallRank=pMeta$overallRank)
     df<-rbind(df,df.sub)
-
+ 
   }
   return (df)
 }
@@ -57,7 +57,7 @@ preoarePosNegTerms<-function (){
   f<-read.delim("data/AFINN-111.txt",header=FALSE, stringsAsFactors=FALSE)
   names(f)<-c("word","score")
   vNegTerms <- f$word[f$score==-5 | f$score==-4]
-  negTerms <- f$word[f$score==-3 | f$score==-2 | f$score==-1]
+  negTerms <- f$word[ f$score==-2 | f$score==-1]
   vPosTerms <- c(f$word[f$score==5 | f$score==4] ,"want","cant wait","buy","bought","look forward")
   posTerms <- c(f$word[f$score==3 | f$score==2 |f$score==1 ],"in stock")
   write.csv(vNegTerms,"data/vNegTerms.csv")
@@ -65,3 +65,5 @@ preoarePosNegTerms<-function (){
   write.csv(vPosTerms,"data/vPosTerms.csv")
   write.csv(posTerms,"data/posTerms.csv")
 }
+
+
